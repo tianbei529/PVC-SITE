@@ -7,15 +7,71 @@ import os
 import re
 import shutil
 
-import yaml
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DIST = os.path.join(ROOT, "dist")
 
 
-def load_yaml(path):
+def _scalar(s):
+    s = s.strip()
+    if len(s) >= 2 and s[0] == s[-1] and s[0] in "\"'":
+        s = s[1:-1]
+    return s
+
+
+def mini_yaml(path):
+    """Minimal YAML parser for the simple config files used by this site:
+    nested dicts, lists of dicts, flat lists, scalar values."""
     with open(path, encoding="utf-8") as f:
-        return yaml.safe_load(f)
+        lines = [(len(l) - len(l.lstrip(" ")), l.strip())
+                 for l in f if l.strip() and not l.strip().startswith("#")]
+
+    def parse_block(i, indent):
+        # decide list vs dict by first line
+        if lines[i][1].startswith("- "):
+            arr = []
+            while i < len(lines) and lines[i][0] == indent and lines[i][1].startswith("- "):
+                first = lines[i][1][2:].strip()
+                if ":" in first and not first.endswith(":"):
+                    # list of dicts starting inline "- key: val"
+                    item_indent = indent + 2
+                    d = {}
+                    k, v = first.split(":", 1)
+                    d[k.strip()] = _scalar(v) if v.strip() else None
+                    i += 1
+                    while i < len(lines) and lines[i][0] > indent and not lines[i][1].startswith("- "):
+                        k2, v2 = lines[i][1].split(":", 1)
+                        d[k2.strip()] = _scalar(v2) if v2.strip() else None
+                        i += 1
+                    arr.append(d)
+                else:
+                    arr.append(_scalar(first))
+                    i += 1
+            return arr, i
+        else:
+            d = {}
+            while i < len(lines) and lines[i][0] == indent:
+                line = lines[i][1]
+                if ":" not in line:
+                    i += 1
+                    continue
+                k, v = line.split(":", 1)
+                k = k.strip()
+                v = v.strip()
+                if v:
+                    d[k] = _scalar(v)
+                    i += 1
+                else:
+                    # nested block
+                    if i + 1 < len(lines) and lines[i + 1][0] > indent:
+                        d[k], i = parse_block(i + 1, lines[i + 1][0])
+                    else:
+                        d[k] = None
+                        i += 1
+            return d, i
+
+    val, _ = parse_block(0, lines[0][0])
+    return val
 
 
 def esc(s):
@@ -90,17 +146,17 @@ def build_products(products, wa_number):
 
 
 def main():
-    site = load_yaml(os.path.join(ROOT, "content", "site.yaml"))
+    site = mini_yaml(os.path.join(ROOT, "content", "site.yaml"))
     prod_dir = os.path.join(ROOT, "content", "products")
-    products = [load_yaml(os.path.join(prod_dir, f))
+    products = [mini_yaml(os.path.join(prod_dir, f))
                 for f in sorted(os.listdir(prod_dir)) if f.endswith(".yaml")]
 
     with open(os.path.join(ROOT, "template.html"), encoding="utf-8") as f:
         page = f.read()
 
     # inject product cards
-    cards_pvc = build_products([p for p in products if p["weight"] <= 3], site["whatsapp_number"])
-    cards_acr = build_products([p for p in products if p["weight"] > 3], site["whatsapp_number"])
+    cards_pvc = build_products([p for p in products if int(p["weight"]) <= 3], site["whatsapp_number"])
+    cards_acr = build_products([p for p in products if int(p["weight"]) > 3], site["whatsapp_number"])
     assert "{{CARDS_PVC}}" in page and "{{CARDS_ACRYLIC}}" in page, "markers missing in template"
     page = page.replace("{{CARDS_PVC}}", cards_pvc)
     page = page.replace("{{CARDS_ACRYLIC}}", cards_acr)

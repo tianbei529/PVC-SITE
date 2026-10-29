@@ -1,5 +1,5 @@
 [build]
-  command = "pip install pyyaml --quiet && python3 build.py"
+  command = "python3 build.py"
   publish = "dist"
 
 [build.environment]
