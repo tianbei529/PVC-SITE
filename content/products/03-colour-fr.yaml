@@ -1,0 +1,16 @@
+name: "Colour & Flame-Retardant"
+weight: 3
+visual: "swatch"
+image: ""
+image_alt: "Coloured and flame-retardant PVC foam boards"
+link_text: "Request colour card →"
+description: "Custom RAL/Pantone colour matching from 500 kg, plus B1 / M1 flame-retardant and anti-UV formulations for outdoor and public-space use."
+specs:
+  - label: "Colours"
+    value: "Any RAL / Pantone"
+  - label: "Fire rating"
+    value: "B1, M1, EN 13501"
+  - label: "UV option"
+    value: "10-year outdoor"
+  - label: "Best for"
+    value: "Outdoor, transport"

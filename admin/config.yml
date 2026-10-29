@@ -1,0 +1,102 @@
+backend:
+  name: git-gateway
+  branch: main
+
+site_url: "https://www.tianbeiplastic.com"
+logo_url: "https://www.tianbeiplastic.com/images/logo.png"
+locale: "zh_Hans"
+
+media_folder: "images"
+public_folder: "/images"
+
+publish_mode: simple
+
+collections:
+  - name: "settings"
+    label: "网站设置 Site Settings"
+    files:
+      - name: "site"
+        label: "联系方式 Contact Info"
+        file: "content/site.yaml"
+        fields:
+          - label: "公司名称"
+            name: "company_name"
+            widget: "string"
+          - label: "WhatsApp 号码（仅数字，86开头）"
+            name: "whatsapp_number"
+            widget: "string"
+            pattern: ["[0-9]{10,15}", "只填数字，例如 8615893110948"]
+          - label: "WhatsApp 显示格式"
+            name: "whatsapp_display"
+            widget: "string"
+          - label: "联系人姓名"
+            name: "whatsapp_name"
+            widget: "string"
+          - label: "邮箱 Email"
+            name: "email"
+            widget: "string"
+          - label: "电话显示格式"
+            name: "phone_display"
+            widget: "string"
+          - label: "英文地址 第1行"
+            name: "address_en_1"
+            widget: "string"
+          - label: "英文地址 第2行"
+            name: "address_en_2"
+            widget: "string"
+          - label: "英文地址 第3行"
+            name: "address_en_3"
+            widget: "string"
+          - label: "中文地址"
+            name: "address_cn"
+            widget: "string"
+
+  - name: "products"
+    label: "产品 Products"
+    label_singular: "产品"
+    folder: "content/products"
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: ["weight", "name"]
+    editor:
+      preview: false
+    fields:
+      - label: "产品名称"
+        name: "name"
+        widget: "string"
+      - label: "排序（小的在前）"
+        name: "weight"
+        widget: "number"
+        default: 10
+      - label: "展示方式"
+        name: "visual"
+        widget: "select"
+        options: ["image", "swatch"]
+        default: "image"
+        hint: "image=显示图片，swatch=显示色块（彩色PVC板用）"
+      - label: "产品图片"
+        name: "image"
+        widget: "image"
+        required: false
+        allow_multiple: false
+      - label: "图片描述（SEO用）"
+        name: "image_alt"
+        widget: "string"
+        required: false
+      - label: "底部按钮文字"
+        name: "link_text"
+        widget: "string"
+        default: "Request datasheet →"
+      - label: "产品介绍（英文）"
+        name: "description"
+        widget: "text"
+      - label: "规格参数"
+        name: "specs"
+        widget: "list"
+        fields:
+          - label: "参数名（如 Thickness）"
+            name: "label"
+            widget: "string"
+          - label: "参数值（如 1.8 – 20 mm）"
+            name: "value"
+            widget: "string"

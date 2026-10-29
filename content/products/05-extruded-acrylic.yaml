@@ -1,0 +1,18 @@
+name: "Extruded Acrylic Sheet"
+weight: 5
+visual: "image"
+image: "/images/acrylic-rainbow.jpg"
+image_alt: "Coloured extruded acrylic sheets in many colours - PMMA plexiglass supplier"
+link_text: "Request datasheet →"
+description: "Continuous-cast PMMA with tight thickness tolerance and uniform gloss — the cost-efficient choice for volume fabrication, displays and glazing. Available clear and coloured, in steady stock all year."
+specs:
+  - label: "Thickness"
+    value: "1 – 10 mm"
+  - label: "Standard size"
+    value: "1220 × 2440 mm"
+  - label: "Surface"
+    value: "Gloss / matte"
+  - label: "Colours"
+    value: "Clear + coloured"
+  - label: "Best for"
+    value: "Displays, glazing"

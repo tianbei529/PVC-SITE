@@ -1,0 +1,16 @@
+name: "Cast Acrylic Sheet"
+weight: 4
+visual: "image"
+image: "/images/acrylic-clear.jpg"
+image_alt: "Clear cast acrylic sheets plexiglass stacked - 92% light transmission"
+link_text: "Request datasheet →"
+description: "Cell-cast PMMA with outstanding optical clarity (92% light transmission). Our four acrylic production lines run at full capacity year-round, serving customers across the globe — welcome to place your order."
+specs:
+  - label: "Thickness"
+    value: "1.8 – 20 mm"
+  - label: "Standard size"
+    value: "1220 × 2440 mm"
+  - label: "Colours"
+    value: "Clear + full colour range"
+  - label: "Best for"
+    value: "Signage, laser cutting"
