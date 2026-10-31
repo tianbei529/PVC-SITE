@@ -3,7 +3,8 @@ weight: 2
 visual: "image"
 image: "/images/product-thickness.jpg"
 image_alt: "Free foam PVC sheet samples in various thickness from 2mm to 17mm"
-link_text: "Request datasheet →"
+page: "pvc-foam-board.html"
+link_text: "View specs & price →"
 description: "Uniform density from face to core, which makes it easy to cut, route, screw and heat-bend without voids. The cost-effective workhorse for furniture and interior fit-out."
 specs:
   - label: "Thickness"

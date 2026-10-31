@@ -3,7 +3,8 @@ weight: 1
 visual: "image"
 image: "/images/product-celuka.jpg"
 image_alt: "Celuka PVC foam board white sheets stacked - smooth surface PVC foam board"
-link_text: "Request datasheet →"
+page: "pvc-foam-board.html"
+link_text: "View specs & price →"
 description: "Hard, glossy skin with a dense micro-cell core. The smoothest surface in our range — the standard choice for UV printing, screen printing and high-end signage."
 specs:
   - label: "Thickness"

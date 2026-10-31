@@ -3,7 +3,8 @@ weight: 6
 visual: "image"
 image: "/images/acrylic-colors.jpg"
 image_alt: "Colored acrylic sheet squares red blue green purple - frosted and mirror acrylic finishes"
-link_text: "Request colour card →"
+page: "acrylic-sheet.html"
+link_text: "View grades & price →"
 description: "Full RAL colour range, frosted / matte finishes, mirror and two-tone sheets. Custom widths up to 2050 mm from 500 kg per colour. All acrylic is made on our own four dedicated production lines."
 specs:
   - label: "Colours"

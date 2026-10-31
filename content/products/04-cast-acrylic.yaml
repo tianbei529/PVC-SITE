@@ -3,7 +3,8 @@ weight: 4
 visual: "image"
 image: "/images/acrylic-clear.jpg"
 image_alt: "Clear cast acrylic sheets plexiglass stacked - 92% light transmission"
-link_text: "Request datasheet →"
+page: "acrylic-sheet.html"
+link_text: "View specs & price →"
 description: "Cell-cast PMMA with outstanding optical clarity (92% light transmission). Our four acrylic production lines run at full capacity year-round, serving customers across the globe — welcome to place your order."
 specs:
   - label: "Thickness"

@@ -3,7 +3,8 @@ weight: 3
 visual: "swatch"
 image: ""
 image_alt: "Coloured and flame-retardant PVC foam boards"
-link_text: "Request colour card →"
+page: "pvc-foam-board.html"
+link_text: "View grades & price →"
 description: "Custom RAL/Pantone colour matching from 500 kg, plus B1 / M1 flame-retardant and anti-UV formulations for outdoor and public-space use."
 specs:
   - label: "Colours"
