@@ -1,12 +1,12 @@
 ---
-title: "PVC Foam Board Thickness Guide: How to Choose from 1.8 mm to 20 mm"
+title: "PVC Foam Board Thickness Guide: How to Choose from 1.7 mm to 20 mm"
 slug: "pvc-foam-board-thickness-guide"
 date: "2026-11-02"
-description: "A buyer's guide to PVC foam board thickness: which mm works best for signage, UV printing, cabinets and construction, plus weight-per-sheet data from a factory that makes 1.8–20 mm boards every day."
+description: "A buyer's guide to PVC foam board thickness: which mm works best for signage, UV printing, cabinets and construction, plus weight-per-sheet data from a factory that makes 1.7–20 mm boards every day."
 keywords: "pvc foam board thickness, 3mm pvc foam board, 5mm pvc foam board, 10mm pvc sheet, pvc foam board for signage"
 image: "images/product-thickness.jpg"
 ---
-Choosing the right **PVC foam board thickness** is the single biggest decision in your order. Pick too thin and your UV-printed signage bends on the wall; pick too thick and you pay for weight you don't need. This guide comes straight from our production floor in Henan, where we extrude PVC foam board from **1.8 mm to 20 mm** every day, in densities from 0.30 to 0.75 g/cm³.
+Choosing the right **PVC foam board thickness** is the single biggest decision in your order. Pick too thin and your UV-printed signage bends on the wall; pick too thick and you pay for weight you don't need. This guide comes straight from our production floor in Henan, where we extrude PVC foam board from **1.8 mm to 20 mm** every day, in densities from 0.33 to 0.75 g/cm³.
 
 ## Quick answer: which thickness for which job
 
@@ -69,7 +69,7 @@ We measure every batch with a digital micrometer and log the results; full TDS w
 ## What we stock vs what we make to order
 
 - **Stock**: white Celuka and free foam, 3 / 5 / 8 / 10 / 12 mm — ships in 5 – 7 working days
-- **Make to order**: 1.8 – 20 mm, densities 0.30 – 0.75, any RAL colour, flame-retardant grades — 15 – 20 working days
+- **Make to order**: 1.7 – 20 mm, densities 0.33 – 0.75, any RAL colour, flame-retardant grades — 15 – 20 working days
 - **MOQ**: 500 kg per specification for stock items, 3 tons for custom colours
 
 ## Ready to order?
