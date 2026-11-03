@@ -364,6 +364,11 @@ def build_product_pages(site, products, tpl):
             "{{RELATED}}": _related(page, site["whatsapp_number"]),
             "{{FAQ_HTML}}": _faq_html(page),
             "{{TABLE}}": table,
+            "{{WA_WIDGET}}": (
+                '<div id="wa-widget" data-wa="%s" data-name="Anna" data-product="%s"></div>\n'
+                '<script src="/assets/wa-widget.js" defer></script>'
+                % (site["whatsapp_number"], esc(page["link_label"]))
+            ),
             "{{CARDS}}": build_products(group, site["whatsapp_number"]),
             "{{WA_NUMBER}}": site["whatsapp_number"],
             "{{WA_TEXT}}": wa_text,
