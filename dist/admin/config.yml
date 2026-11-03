@@ -155,3 +155,41 @@ collections:
           - label: "我们的优势（第2段）"
             name: "intro_p2"
             widget: "text"
+
+  - name: "posts"
+    label: "文章 Articles"
+    label_singular: "文章"
+    folder: "content/posts"
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: ["date", "title"]
+    editor:
+      preview: false
+    fields:
+      - label: "标题（英文）"
+        name: "title"
+        widget: "string"
+      - label: "网址后缀（英文小写-连接，如 pvc-foam-board-price-guide）"
+        name: "slug"
+        widget: "string"
+        hint: "只用英文字母、数字和横杠，发表后不要改"
+      - label: "发布日期"
+        name: "date"
+        widget: "datetime"
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+      - label: "文章描述（SEO，155字符以内英文）"
+        name: "description"
+        widget: "text"
+      - label: "关键词（英文，逗号分隔）"
+        name: "keywords"
+        widget: "string"
+        required: false
+      - label: "封面图片"
+        name: "image"
+        widget: "image"
+        default: "images/og-cover.jpg"
+      - label: "正文（Markdown 格式）"
+        name: "body"
+        widget: "markdown"

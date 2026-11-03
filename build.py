@@ -183,7 +183,7 @@ PVC_TABLE = """            <table>
                 </tr>
               </thead>
               <tbody>
-                <tr><td class="mono">1.8 &ndash; 2 mm</td><td class="mono">0.50 &ndash; 0.75</td><td class="mono">1220 &times; 2440</td><td class="mono">5.4 &ndash; 7.5</td><td>Glossy</td><td>Indoor signage, POP display</td></tr>
+                <tr><td class="mono">1.7 &ndash; 3 mm</td><td class="mono">0.33 &ndash; 0.50</td><td class="mono">1220 &times; 2440</td><td class="mono">1.7 &ndash; 4.5</td><td>Glossy</td><td>Indoor signage, POP display</td></tr>
                 <tr><td class="mono">3 &ndash; 5 mm</td><td class="mono">0.45 &ndash; 0.70</td><td class="mono">1220 &times; 2440</td><td class="mono">8.0 &ndash; 15.0</td><td>Glossy / matte</td><td>UV printing, exhibition boards</td></tr>
                 <tr><td class="mono">8 &ndash; 12 mm</td><td class="mono">0.40 &ndash; 0.65</td><td class="mono">1220 &times; 2440</td><td class="mono">19 &ndash; 39</td><td>Matte</td><td>Cabinet doors, furniture panels</td></tr>
                 <tr><td class="mono">15 &ndash; 20 mm</td><td class="mono">0.30 &ndash; 0.60</td><td class="mono">1220 &times; 2440</td><td class="mono">30 &ndash; 60</td><td>Matte</td><td>Wet-area cabinets, partitions</td></tr>
