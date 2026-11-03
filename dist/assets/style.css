@@ -627,3 +627,69 @@ header.solid{background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-
   .rel-grid{grid-template-columns:1fr}
   .crumb .wrap{height:auto;padding-top:10px;padding-bottom:10px;font-size:12px}
 }
+
+/* ============================================
+   BLOG / ARTICLES
+   ============================================ */
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.blog-card{
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;display:flex;flex-direction:column;transition:all .3s var(--ease);
+}
+.blog-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:#d6dbe2}
+.blog-card figure{margin:0;aspect-ratio:16/9;overflow:hidden;background:#e6eaee}
+.blog-card img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+.blog-card:hover img{transform:scale(1.05)}
+.blog-card-body{padding:22px 24px 24px;display:flex;flex-direction:column;flex:1}
+.blog-card-meta{font-size:12px;color:var(--ink-3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px}
+.blog-card h3{font-size:17.5px;font-weight:700;letter-spacing:-.015em;line-height:1.35;margin-bottom:10px}
+.blog-card h3 a{color:inherit}
+.blog-card h3 a:hover{color:var(--brand)}
+.blog-card p{font-size:13.5px;color:var(--ink-2);line-height:1.62;flex:1}
+.blog-card .bc-more{margin-top:16px;font-size:13.5px;font-weight:650;color:var(--brand)}
+
+/* single post */
+.post-head{max-width:860px}
+.post-meta{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:13.5px;color:var(--ink-3);margin-bottom:18px}
+.post-badge{
+  background:var(--brand);color:#fff;font-size:11px;font-weight:800;
+  letter-spacing:.08em;text-transform:uppercase;border-radius:100px;padding:4px 12px;
+}
+.post-head h1{font-size:clamp(26px,3.4vw,40px);line-height:1.18;letter-spacing:-.03em;font-weight:800;margin-bottom:16px}
+.post-lede{font-size:17px;color:var(--ink-2);line-height:1.7}
+
+.post-body{max-width:860px;font-size:16.5px;color:var(--ink);line-height:1.78}
+.post-body h2{
+  font-size:24px;font-weight:750;letter-spacing:-.02em;margin:48px 0 18px;
+  padding-top:34px;border-top:1px solid var(--line-soft);
+}
+.post-body h2:first-child{border-top:none;padding-top:0;margin-top:8px}
+.post-body h3{font-size:18.5px;font-weight:700;margin:32px 0 12px;letter-spacing:-.01em}
+.post-body p{margin-bottom:18px;color:var(--ink-2)}
+.post-body strong{color:var(--ink)}
+.post-body ul,.post-body ol{margin:0 0 18px 22px;color:var(--ink-2)}
+.post-body ul{list-style:disc}
+.post-body ol{list-style:decimal}
+.post-body li{margin-bottom:8px}
+.post-body blockquote{
+  border-left:3px solid var(--brand);background:rgba(11,107,203,.05);
+  border-radius:0 12px 12px 0;padding:14px 20px;margin:0 0 20px;color:var(--ink);
+  font-weight:500;
+}
+.post-body figure{margin:26px 0}
+.post-body figure img{width:100%;border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+.post-body .table-wrap{margin:26px 0;min-width:0}
+.post-body table{min-width:520px}
+.post-body a{color:var(--brand);font-weight:600}
+.post-body a:hover{text-decoration:underline}
+.post-nav{margin-top:40px;display:flex;gap:14px}
+
+@media (max-width:1024px){
+  .blog-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:600px){
+  .blog-grid{grid-template-columns:1fr}
+  .post-head h1{font-size:26px}
+  .post-body{font-size:15.5px}
+  .post-body h2{font-size:20px}
+}

@@ -7,6 +7,8 @@ import os
 import re
 import shutil
 
+from markdown_lite import md_to_html
+
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DIST = os.path.join(ROOT, "dist")
@@ -75,6 +77,11 @@ def mini_yaml(path):
 
 def esc(s):
     return html.escape(str(s), quote=False)
+
+
+def attr(s):
+    """Escape for a double-quoted HTML attribute."""
+    return html.escape(str(s), quote=True)
 
 
 def txt(s):
@@ -375,7 +382,169 @@ def build_product_pages(site, products, tpl):
     return built
 
 
-def write_sitemap(product_urls, today):
+# --------------------------------------------------------------------------
+# blog / articles
+# --------------------------------------------------------------------------
+
+def load_posts():
+    """Parse content/posts/*.md -> list of dicts (frontmatter + body html)."""
+    post_dir = os.path.join(ROOT, "content", "posts")
+    if not os.path.isdir(post_dir):
+        return []
+    posts = []
+    for fname in sorted(os.listdir(post_dir)):
+        if not fname.endswith(".md"):
+            continue
+        path = os.path.join(post_dir, fname)
+        with open(path, encoding="utf-8") as f:
+            raw = f.read().replace("\r\n", "\n")
+        meta, body = {}, raw
+        if raw.startswith("---\n"):
+            end = raw.find("\n---\n", 4)
+            if end != -1:
+                block = raw[4:end]
+                body = raw[end + 5:]
+                for line in block.split("\n"):
+                    if ":" not in line:
+                        continue
+                    k, v = line.split(":", 1)
+                    meta[k.strip()] = _scalar(v)
+        slug = meta.get("slug") or fname[:-3]
+        meta["slug"] = slug
+        meta["body_html"] = md_to_html(body)
+        meta.setdefault("title", slug)
+        meta.setdefault("description", "")
+        meta.setdefault("date", "")
+        meta.setdefault("image", "images/og-cover.jpg")
+        meta["fname"] = fname
+        posts.append(meta)
+    # newest first
+    posts.sort(key=lambda p: p.get("date", ""), reverse=True)
+    return posts
+
+
+def _plain(s, limit=170):
+    """Strip markdown/html for use in meta descriptions and card excerpts."""
+    s = re.sub(r"<[^>]+>", " ", str(s))
+    s = re.sub(r"[*_`>#|]", "", s)
+    s = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", s)
+    s = re.sub(r"\s+", " ", s).strip()
+    if len(s) > limit:
+        s = s[:limit].rsplit(" ", 1)[0] + "…"
+    return s
+
+
+def _date_display(iso):
+    """2026-11-02 -> November 2, 2026"""
+    months = ["January", "February", "March", "April", "May", "June", "July",
+              "August", "September", "October", "November", "December"]
+    try:
+        y, m, d = [int(x) for x in iso.split("-")[:3]]
+        return "%s %d, %d" % (months[m - 1], d, y)
+    except Exception:
+        return iso
+
+
+def _excerpt(post):
+    """First real paragraph of the body, falling back to the description."""
+    m = re.search(r"<p>(.*?)</p>", post["body_html"], re.S)
+    if m:
+        return _plain(m.group(1))
+    return _plain(post["description"])
+
+
+def _post_card(post):
+    return (
+        '      <article class="blog-card reveal">\n'
+        '        <a href="/blog/%s/" aria-label="%s">\n'
+        '          <figure><img src="../%s" alt="%s" loading="lazy"></figure>\n'
+        '        </a>\n'
+        '        <div class="blog-card-body">\n'
+        '          <div class="blog-card-meta">%s</div>\n'
+        '          <h3><a href="/blog/%s/">%s</a></h3>\n'
+        '          <p>%s</p>\n'
+        '          <a href="/blog/%s/" class="bc-more">Read the guide →</a>\n'
+        '        </div>\n'
+        '      </article>' % (
+            esc(post["slug"]),
+            attr(post["title"]),
+            attr(post["image"]),
+            attr(post["title"]),
+            esc(_date_display(post["date"])),
+            esc(post["slug"]),
+            esc(post["title"]),
+            esc(_excerpt(post)),
+            esc(post["slug"]),
+        )
+    )
+
+
+def build_blog(site, post_tpl, blog_tpl):
+    """Returns (list of (relpath, html), [post slugs])."""
+    posts = load_posts()
+    if not posts:
+        return [], []
+
+    wa_number = site["whatsapp_number"]
+    wa_text = html.escape(
+        "Hi Anna, I have a question about PVC foam board.",
+        quote=False).replace(" ", "%20").replace("'", "%27")
+
+    common = {
+        "{{WA_NUMBER}}": wa_number,
+        "{{WA_TEXT}}": wa_text,
+        "{{EMAIL}}": esc(site["email"]),
+    }
+
+    out = []
+
+    # individual posts -> blog/<slug>/index.html  (pretty URLs)
+    for post in posts:
+        title = post["title"]
+        meta_title = post.get("meta_title") or (title + " | Tianbei")
+        description = _plain(post.get("description") or _excerpt(post), 158)
+        short = title.split(":")[0].split("—")[0].strip()
+        if len(short) > 58:
+            short = short[:58].rsplit(" ", 1)[0] + "…"
+
+        reps = dict(common)
+        reps.update({
+            "{{SLUG}}": esc(post["slug"]),
+            "{{TITLE}}": esc(title),
+            "{{TITLE_SHORT}}": esc(short),
+            "{{META_TITLE}}": esc(meta_title),
+            "{{META_DESCRIPTION}}": esc(description),
+            "{{DESCRIPTION}}": esc(_plain(post.get("description") or _excerpt(post), 240)),
+            "{{DATE_ISO}}": esc(post["date"]),
+            "{{DATE_DISPLAY}}": esc(_date_display(post["date"])),
+            "{{POST_IMAGE}}": esc(post["image"]),
+            "{{BODY}}": post["body_html"],
+        })
+        h = post_tpl
+        for k, v in reps.items():
+            h = h.replace(k, v)
+        left = re.findall(r"\{\{[A-Z0-9_]+\}\}", h)
+        assert not left, "unreplaced markers in post %s: %s" % (post["slug"], left)
+        out.append(("blog/%s/index.html" % post["slug"], h))
+
+    # listing page -> blog/index.html
+    reps = dict(common)
+    reps.update({
+        "{{META_TITLE}}": "PVC Foam Board & Acrylic Sheet Buying Guides | Tianbei",
+        "{{META_DESCRIPTION}}": "Practical buying guides for PVC foam board and acrylic sheet: thickness selection, density, quality checks and pricing, written by the manufacturer.",
+        "{{POSTS}}": "\n\n".join(_post_card(p) for p in posts),
+    })
+    h = blog_tpl
+    for k, v in reps.items():
+        h = h.replace(k, v)
+    left = re.findall(r"\{\{[A-Z0-9_]+\}\}", h)
+    assert not left, "unreplaced markers in blog index: %s" % left
+    out.append(("blog/index.html", h))
+
+    return out, [p["slug"] for p in posts]
+
+
+def write_sitemap(product_urls, today, post_urls=()):
     urls = [("https://www.tianbeiplastic.com/", "1.0")]
     urls += [("https://www.tianbeiplastic.com/" + u, "0.9") for u in product_urls]
     urls += [
@@ -385,6 +554,9 @@ def write_sitemap(product_urls, today):
         ("https://www.tianbeiplastic.com/#faq", "0.7"),
         ("https://www.tianbeiplastic.com/#contact", "0.8"),
     ]
+    if post_urls:
+        urls.append(("https://www.tianbeiplastic.com/blog/", "0.8"))
+        urls += [("https://www.tianbeiplastic.com/blog/%s/" % u, "0.7") for u in post_urls]
     items = [
         "  <url>\n    <loc>%s</loc>\n    <lastmod>%s</lastmod>\n"
         "    <changefreq>weekly</changefreq>\n    <priority>%s</priority>\n  </url>" % (u, today, p)
@@ -410,6 +582,10 @@ def main():
         page = f.read()
     with open(os.path.join(ROOT, "template-product.html"), encoding="utf-8") as f:
         prod_tpl = f.read()
+    with open(os.path.join(ROOT, "template-post.html"), encoding="utf-8") as f:
+        post_tpl = f.read()
+    with open(os.path.join(ROOT, "template-blog.html"), encoding="utf-8") as f:
+        blog_tpl = f.read()
 
     # inject product cards
     cards_pvc = build_products([p for p in products if int(p["weight"]) <= 3], site["whatsapp_number"])
@@ -424,6 +600,11 @@ def main():
     page = page.replace("anna@tianbeiplastic.com", site["email"])
 
     product_pages = build_product_pages(site, products, prod_tpl)
+    blog_pages, post_slugs = build_blog(site, post_tpl, blog_tpl)
+
+    # on the home page, point "Articles" at the real blog listing
+    if post_slugs:
+        page = page.replace('href="#articles"', 'href="/blog/"')
 
     # assemble dist
     if os.path.isdir(DIST):
@@ -432,7 +613,7 @@ def main():
 
     # collect referenced media (all html) to keep dist lean
     used = set()
-    all_html = page + "".join(h for _, h in product_pages)
+    all_html = page + "".join(h for _, h in product_pages) + "".join(h for _, h in blog_pages)
     for m in re.findall(r'images/[\w./-]+\.(?:jpg|jpeg|png|webp|mp4)', all_html):
         used.add(os.path.basename(m))
 
@@ -460,9 +641,15 @@ def main():
         with open(os.path.join(DIST, url), "w", encoding="utf-8") as f:
             f.write(htmlout)
 
-    write_sitemap([u for u, _ in product_pages], today)
+    for relpath, htmlout in blog_pages:
+        full = os.path.join(DIST, relpath)
+        os.makedirs(os.path.dirname(full), exist_ok=True)
+        with open(full, "w", encoding="utf-8") as f:
+            f.write(htmlout)
 
-    print("build ok:", sorted(os.listdir(DIST)))
+    write_sitemap([u for u, _ in product_pages], today, post_slugs)
+
+    print("build ok:", sorted(os.listdir(DIST)), "| posts:", len(post_slugs))
 
 
 if __name__ == "__main__":
