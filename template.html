@@ -1013,5 +1013,16 @@
   }
 })();
 </script>
+<script>
+(function(){
+  var CONV = 'AW-18564277587/ek4kCIyNr7UdENPKkZRF';
+  document.addEventListener('click', function(e){
+    var a = e.target && e.target.closest ? e.target.closest('a[href^="https://wa.me"]') : null;
+    if (a && typeof gtag === 'function') {
+      gtag('event', 'conversion', {'send_to': CONV, 'value': 1.0, 'currency': 'SGD'});
+    }
+  }, true);
+})();
+</script>
 </body>
 </html>
